@@ -1,0 +1,53 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Магазины", 
+		"#SITE_DIR#contacts/stores/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Условия оплаты", 
+		"#SITE_DIR#help/payment/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Условия доставки", 
+		"#SITE_DIR#help/delivery/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Гарантия на товар", 
+		"#SITE_DIR#help/warranty/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Реквизиты", 
+		"#", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Политика", 
+		"#SITE_DIR#include/licenses_detail.php", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Возможности", 
+		"#SITE_DIR#info/more/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>

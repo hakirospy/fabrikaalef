@@ -1,0 +1,1 @@
+<?$MESS ['MLSP_INSTALL_TEXT'] = '<span style="color:green">Модуль КЛАДР установлен. Настройте модуль, следуя инструкции в <a href="/bitrix/admin/settings.php?lang=ru&mid=ipol.kladr&mid_menu=1">разделе настроек</a>.</span>';$MESS ['IPOLKLADR_NOCURL'] = '<span style="color:red">Модуль КЛАДР не установлен. Отсутствует PHP расширение CURL.</span>';?>

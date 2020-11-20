@@ -1,0 +1,146 @@
+/* основные стили формы */
+.ipolkladrform {width: 400px}
+.ipolkladrform form {
+	/*box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1) !important;
+	border-radius: 4px !important;*/
+}
+
+.ipolkladrform form > div {width: 100% !important;box-shadow: none !important;}
+.ipolkladrform form input[type="text"] {
+		border: 1px #ddd solid !important; 
+		padding: 8px 10px !important; 
+		box-sizing: border-box !important;
+		/*background: transparent !important;*/
+		background: #fff !important;
+		margin: 0 !important; 
+		box-shadow: none;
+		min-width: 175px !important;
+		line-height: 30px !important;
+		height: 34px !important;
+		color: #666 !important;
+	}
+.ipolkladrform form input[type="text"]:focus {
+	background-color: #fafbfd !important; outline: 0 !important;box-shadow: none !important;}
+.ipolkladrform form > div.top  > input {
+	border-radius: 4px 4px 0 0 !important; 
+	width: 100% !important;
+	box-shadow: none !important;
+	}
+.ipolkladrform form > div.middleinput > input {width: 100% !important; border-top: 0 !important; border-bottom: 0 !important;border-radius:0 !important;box-shadow: none !important;}
+.ipolkladrform form > div.bottom > input {display: inline-block !important; width: 50% !important;box-shadow: none !important;}
+.ipolkladrform form > div.bottom > input:nth-child(1) {border-radius: 0px 0px 0px 0px !important; box-shadow: none !important;}
+/*.ipolkladrform form > div:nth-child(3) > input:nth-child(2) {width: 34% !important; border-left: 0 !important; border-right: 0 !important; border-radius: 0 !important;box-shadow: none !important;}*/
+.ipolkladrform form > div.bottom > input:nth-child(2) {border-radius: 0px 0px 0px 0px !important;box-shadow: none !important;}
+.ipolkladrform input, .ipolkladrform textarea {-webkit-appearance: none !important;}
+
+.ipolkladrform .panel-map {
+    width: 400px;
+    height: 160px;
+}
+.ipolkladrform .addition{
+	margin-top:5px;
+}
+
+
+
+.nobasemessage{
+	text-decoration:none;
+	color:#2D739D;
+	border-bottom: 1px dashed #2D739D;
+	display: inline-block;
+}
+
+.changeRussia {
+	margin-bottom:10px;
+} 
+
+.changeRussia a{
+	text-decoration:none;
+	color:#2D739D;
+	border-bottom: 1px dashed #2D739D;
+	display: inline-block;
+}
+
+
+
+/*стили автоподсказок кладр*/
+.kladr-error{color:#cb3e27}
+#kladr_autocomplete ul{
+	position:absolute;
+	display:block;
+	margin:0;padding:0;
+	border:1px solid #c4c4c4;
+	background-color:#fff;
+	z-index:9999;
+	overflow-x:hidden;
+	overflow-y:auto;
+	min-width:200px;
+	max-height:420px;
+	color:#313131
+}
+#kladr_autocomplete li{display:list-item;list-style-type:none;margin:0;padding:8px 10px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#kladr_autocomplete li+li{border-top:1px solid #ededed}
+#kladr_autocomplete li:hover{background-color:#f2f2f2;cursor:pointer}
+#kladr_autocomplete li.active{background-color:#e9e9e9}
+#kladr_autocomplete a{text-decoration:none}
+#kladr_autocomplete strong{color:#038ebd}
+#kladr_autocomplete .spinner{position:absolute;display:block;margin:0;padding:0;width:16px;height:16px;background:url("/bitrix/images/ipol.kladr/spinner.png") center center no-repeat;
+	z-index:9999;
+}
+
+#kladr_autocomplete small {
+    color: #AAA;
+}
+
+.fancyback{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+	background-color:#000;
+	opacity:0.9;
+	z-index:10000000;
+	top:0;
+	left:0;
+	display:none;
+}
+.fancyform{
+	/*z-index:10000001;*/
+	position: relative;
+}
+.addition.fancyadd{
+	color:#fff;
+}
+.unfancybutton{
+	position: absolute;
+	display:none;
+	background: #FFBE60;
+    width: 100%;
+    text-align: center;
+    border-radius: 4px;
+    padding: 10px 0;
+    margin-top: 20px;
+	font-size: 14px;
+    color: #666 !important;
+	cursor:pointer;
+}
+.unfancybutton.fancybut{
+	display:block;
+}
+
+/*для мнимого плейсхолдера квартиры*/
+.ipolkladrform form input[type="text"].placeholdered{
+	color: #aeabab  !important;
+}
+
+/*новое*/
+#SAdr_city{
+    padding: 6px 4px;
+    border: 1px solid #CCD5DB;
+	width: 100%;
+}
+
+#SAdr_zip{
+    padding: 6px 4px;
+    border: 1px solid #CCD5DB;
+	width: 100%;
+}

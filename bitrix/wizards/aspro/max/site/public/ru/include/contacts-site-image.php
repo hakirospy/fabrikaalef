@@ -1,0 +1,1 @@
+<img src="#SITE_DIR#images/contacts_image.jpg">

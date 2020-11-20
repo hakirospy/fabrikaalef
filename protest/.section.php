@@ -1,0 +1,6 @@
+<?
+$sSectionName = "protest";
+$arDirProperties = Array(
+
+);
+?>

@@ -1,0 +1,186 @@
+<?
+#################################################
+#        Company developer: IPOL
+#        Developer: Nikta Egorov
+#        Site: http://www.ipol.com
+#        E-mail: om-sv2@mail.ru
+#        Copyright (c) 2006-2012 IPOL
+#################################################
+?>
+<?
+IncludeModuleLangFile(__FILE__); 
+
+if(class_exists("ipol_sdek")) 
+    return;
+	
+Class ipol_sdek extends CModule{
+    var $MODULE_ID = "ipol.sdek";
+    var $MODULE_NAME;
+	var $MODULE_VERSION;
+	var $MODULE_VERSION_DATE;
+	var $MODULE_DESCRIPTION;
+	var $MODULE_CSS;
+	var $MODULE_GROUP_RIGHTS = "N";
+        var $errors;
+
+	function ipol_sdek(){
+		$arModuleVersion = array();
+
+		$path = str_replace("\\", "/", __FILE__);
+		$path = substr($path, 0, strlen($path) - strlen("/index.php"));
+		include($path."/version.php");
+
+		$this->MODULE_VERSION = $arModuleVersion["VERSION"];
+		$this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
+
+		$this->MODULE_NAME = GetMessage("IPOLSDEK_INSTALL_NAME");
+		$this->MODULE_DESCRIPTION = GetMessage("IPOLSDEK_INSTALL_DESCRIPTION");
+        
+        $this->PARTNER_NAME = "Ipol";
+        $this->PARTNER_URI = "http://www.ipolh.com";
+	}
+
+	protected function getDB(){
+		return array('ipol_sdek'=>'Orders','ipol_sdekcities'=>'Cities','ipol_sdeklogs'=>'Auth');
+	}
+	
+	function InstallDB(){
+		global $DB, $DBType, $APPLICATION;
+		$this->errors = false;
+
+		$arDB = $this->getDB();
+
+		foreach($arDB as $name => $path)
+			if(!$DB->Query("SELECT 'x' FROM ".$name, true)){
+				$this->errors = $DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/db/mysql/install".$path.".sql");
+				if($this->errors !== false){
+					$APPLICATION->ThrowException(implode("", $this->errors));
+					return false;
+				}
+			}
+
+		return true;
+	}
+
+	function UnInstallDB($preserveOrders = false){
+		global $DB, $DBType, $APPLICATION;
+		$this->errors = false;
+
+		$arDB = $this->getDB();
+
+		foreach($arDB as $name => $path){
+			if($name != 'ipol_sdek' || !$preserveOrders){
+				$this->errors = $DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/db/mysql/unInstall".$path.".sql");
+				if(!empty($this->errors)){
+					$APPLICATION->ThrowException(implode("", $this->errors));
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	function InstallEvents(){
+		//all events sets in /classes/general/sdekhelper.php ������� auth
+		return true;
+	}
+	function UnInstallEvents() {
+		UnRegisterModuleDependences("main", "OnEpilog", $this->MODULE_ID, "sdekdriver", "onEpilog");
+		UnRegisterModuleDependences("main", "OnEndBufferContent", $this->MODULE_ID, "CDeliverySDEK", "onBufferContent");
+		UnRegisterModuleDependences("sale", "OnSaleComponentOrderOneStepDelivery", $this->MODULE_ID, "CDeliverySDEK", "pickupLoader");
+		UnRegisterModuleDependences("sale", "OnSaleComponentOrderOneStepProcess", $this->MODULE_ID, "CDeliverySDEK", "loadComponent");
+		UnRegisterModuleDependences("main", "OnAdminListDisplay", $this->MODULE_ID, "sdekdriver", "displayActPrint"); // ������
+		UnRegisterModuleDependences("main", "OnBeforeProlog", $this->MODULE_ID, "sdekdriver", "OnBeforePrologHandler");
+		UnRegisterModuleDependences("sale", "OnSaleComponentOrderOneStepComplete", $this->MODULE_ID, "sdekdriver", "orderCreate"); // �������� ������
+		UnRegisterModuleDependences("sale", "OnSaleComponentOrderOneStepPaySystem", $this->MODULE_ID, "CDeliverySDEK", "checkNalD2P");
+		UnRegisterModuleDependences("sale", "OnSaleComponentOrderOneStepDelivery", $this->MODULE_ID, "CDeliverySDEK", "checkNalP2D");
+		return true;
+	}
+
+	function InstallFiles(){
+		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$this->MODULE_ID."/install/images/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/images/".$this->MODULE_ID, true, true);
+		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$this->MODULE_ID."/install/js/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/js/".$this->MODULE_ID, true, true);
+		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$this->MODULE_ID."/install/components/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/components/", true, true);
+		return true;
+	}
+	function UnInstallFiles(){
+		DeleteDirFilesEx("/bitrix/js/".$this->MODULE_ID);
+		if(file_exists($_SERVER['DOCUMENT_ROOT'].'/bitrix/tools/'.$this->MODULE_ID))
+			DeleteDirFilesEx("/bitrix/tools/".$this->MODULE_ID);
+		DeleteDirFilesEx("/bitrix/images/".$this->MODULE_ID);
+		DeleteDirFilesEx("/bitrix/php_interface/include/sale_delivery/delivery_sdek.php");
+		DeleteDirFilesEx("/bitrix/components/ipol/ipol.sdekPickup");
+		DeleteDirFilesEx("/upload/".$this->MODULE_ID);
+		$arrayOfFiles=scandir($_SERVER['DOCUMENT_ROOT'].'/bitrix/components/ipol');
+		$flagForDelete=true;
+		foreach($arrayOfFiles as $element){
+			if(strlen($element)>2)
+				$flagForDelete=false;
+		}
+		if($flagForDelete)
+			DeleteDirFilesEx("/bitrix/components/ipol");
+		return true;
+	}
+	
+    function DoInstall(){
+        global $DB, $APPLICATION, $step;
+		$this->errors = false;
+		
+		$this->InstallDB();
+		$this->InstallEvents();
+		$this->InstallFiles();
+		
+		RegisterModule($this->MODULE_ID);
+		
+        $APPLICATION->IncludeAdminFile(GetMessage("IPOLSDEK_INSTALL"), $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$this->MODULE_ID."/install/step1.php");
+    }
+
+    function DoUninstall(){
+        global $DB, $APPLICATION, $step;
+		$this->errors = false;
+		
+		if($_REQUEST['step'] < 2){
+			$this->ShowDataSaveForm();
+		}elseif($_REQUEST['step'] == 2){
+			COption::SetOptionString($this->MODULE_ID,'logged',false);
+			 
+			$this->UnInstallDB($_REQUEST['savedata']);
+			$this->UnInstallFiles();
+			$this->UnInstallEvents();
+			
+			CAgent::RemoveModuleAgents('ipol.sdek');
+			
+			UnRegisterModule($this->MODULE_ID);
+			$APPLICATION->IncludeAdminFile(GetMessage("IPOLSDEK_DEL"), $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/".$this->MODULE_ID."/install/unstep1.php");
+		}
+    }
+	
+	private function ShowDataSaveForm() {
+		$keys = array_keys($GLOBALS);
+		for ($i = 0; $i < count($keys); $i++) {
+			if ($keys[$i] != 'i' && $keys[$i] != 'GLOBALS' && $keys[$i] != 'strTitle' && $keys[$i] != 'filepath') {
+				global ${$keys[$i]};
+			}
+		}
+
+		$APPLICATION->SetTitle(GetMessage('IPOLSDEK_DEL'));
+		include($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_admin_after.php');
+		?>
+		<form action="<?= $APPLICATION->GetCurPage() ?>" method="get">
+			<?= bitrix_sessid_post();?>
+			<input type="hidden" name="lang" value="<?= LANG ?>" />
+			<input type="hidden" name="id" value="<?= $this->MODULE_ID ?>" />
+			<input type="hidden" name="uninstall" value="Y" />
+			<input type="hidden" name="step" value="2" />
+			<? CAdminMessage::ShowMessage(GetMessage('IPOLSDEK_PRESERVE_TABLES')) ?>
+			<p><?echo GetMessage('MOD_UNINST_SAVE')?></p>
+			 <p><input type="checkbox" name="savedata" id="savedata" value="Y" checked="checked" /><label for="savedata"><?echo GetMessage('MOD_UNINST_SAVE_TABLES')?></label><br /></p>
+			<input type="submit" name="inst" value="<?echo GetMessage('MOD_UNINST_DEL');?>" />
+		</form>
+		<?
+		include($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/epilog_admin.php');
+		die();
+	}
+}
+?>

@@ -1,0 +1,15 @@
+<?php
+
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_CODE_NOT_SET'] = 'Не указан код торгового сервиса';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_CODE_INVALID'] = 'Сервис #SERVICE# не найден';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SETUP_NOT_FOUND'] = 'Профиль обработки заказов не найден #SITE_ID#';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SETUP_INACTIVE'] = 'Профиль обработки заказов деактивирован #SITE_ID#';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SETUP_NOT_EXISTS'] = 'Не найдено активных профилей обработки заказов';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_ACTION_ORDER_VIEW'] = 'Посмотреть информацию о заказе';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_PRINT_REQUIRE_SELECT_ORDERS'] = 'Выберите заказы для печати';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_DEPRECATED'] = 'Обработка заказов обновлена';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_DEPRECATED_DETAILS'] = 'Перейти на&nbsp;<a href="#URL#">новый адрес</a>';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_NEED_MIGRATE'] = 'Обработка заказов обновлена';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_NEED_MIGRATE_DETAILS'] = 'Необходимо <a href="#URL#">перенести настройки</a>';
+$MESS['YANDEX_MARKET_UI_TRADING_ORDER_LIST_SERVICE_FALLBACK_DEPRECATED'] = 'Перейти к старому профилю';
+$MESS['YANDEX_MARKET_PRINT_DIALOG_SUBMIT'] = 'Печать';
